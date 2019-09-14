@@ -31,8 +31,9 @@ req.end();
 export class Content extends React.Component {
     render() {
         return <div><h1>Welcome to the Chat Bot!</h1>
-        <body></body>
-        <input />
-        <button>Send</button></div>;
+        <body>
+         <img src="/static/chatbot-image.jpg" />
+        </body>
+        </div>;
     }
 }
