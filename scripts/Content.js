@@ -1,5 +1,7 @@
     
 import * as React from 'react';
+import {favoriteFood} from './MyFavoriteFoodHeader.js';
+import {foodList} from './MyFavoriteFoodList.js';
 
 var http = require("https");
 
@@ -30,8 +32,11 @@ req.end();
 
 export class Content extends React.Component {
     render() {
+    	let my_food = ['sushi', 'meat', 'eggs', 'yams'];
         return <div><h1>Welcome to the Chat Bot!</h1>
         <body>
+        <h2>{favoriteFood()}</h2>
+        <ul>{foodList(my_food)}</ul>
          <img src="/static/chatbot-image.jpg" />
         </body>
         </div>;
