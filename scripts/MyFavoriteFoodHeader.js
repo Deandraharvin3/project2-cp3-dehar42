@@ -1,4 +1,11 @@
+import * as React from 'react';
 
-export function favoriteFood(){
-      return 'My Favorite Food';
+export class MyFavoriteFoodHeader extends React.Component {
+  render() {
+    return (
+            <div>
+                My Favorite Food:
+            </div>
+        );
+  }
 }

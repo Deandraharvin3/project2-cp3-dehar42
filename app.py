@@ -1,8 +1,11 @@
 import os
-import flask, flask_socketio
+import flask, flask_socketio, flask_sqlalchemy
 
 app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://Deandra:Dajah312!@localhost/postgres'  
+db = flask_sqlalchemy.SQLAlchemy(app)
 
 @app.route('/')
 def hello():
