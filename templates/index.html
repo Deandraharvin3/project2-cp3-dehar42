@@ -1,20 +1,13 @@
 <html>
     <head>
         <title>Chat Bot</title>
+        <h1> Welcome to Chat Bot</h1>
     </head>
-    <body>
+
+    <body background="/static/chatbot-image.jpg">
+        <input type="text" name="Enter Username"/>
         <div id="content"></div>
- <!-- Start of ChatBot (www.chatbot.com) code -->
-<script type="text/javascript">
-    window.__be = window.__be || {};
-    window.__be.id = "5d7b0d023b40480007c7897a";
-    (function() {
-        var be = document.createElement('script'); be.type = 'text/javascript'; be.async = true;
-        be.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.chatbot.com/widget/plugin.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(be, s);
-    })();
-</script>
-<!-- End of ChatBot code -->
+        <text>Message from {{group_message}}</text>
         <script type="text/javascript" src="/static/script.js"></script>
     </body>
 </html>

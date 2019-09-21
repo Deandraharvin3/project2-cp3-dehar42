@@ -3,43 +3,36 @@ import * as React from 'react';
 import {MyFavoriteFoodHeader} from './MyFavoriteFoodHeader.js';
 import {MyFavoriteFoodList} from './MyFavoriteFoodList.js';
 
-var http = require("https");
-
-var options = {
-	"method": "GET",
-	"hostname": "api.chatbot.com",
-	"port": null,
-	"path": "/stories",
-	"headers": {
-		"authorization": "Bearer ${MiYLzDMtDWPZB2cBdatNme6Jdbr86N0_}"
-	}
+var bottomText = {
+	positon: 'absolute',
+	bottome: 0
 };
-
-var req = http.request(options, function (res) {
-	var chunks = [];
-
-	res.on("data", function (chunk) {
-		chunks.push(chunk);
-	});
-
-	res.on("end", function () {
-		var body = Buffer.concat(chunks);
-		console.log(body.toString());
-	});
-});
-
-req.end();
-
+var know = {
+    "hello" : "hi",
+    "how are you?" : "good",
+    "ok" : ":)"
+    };
+    
+function talk() {
+    var user = document.getElementById("userBox").value;
+    document.getElementById("userBox").value = "";
+    document.getElementById("chatLog").innerHTML += user+"<br>";
+    if (user in know) {
+        document.getElementById("chatLog").innerHTML += know[user]+"<br>";
+        } else {
+            document.getElementById("chatLog").innerHTML += "I don't understand...<br>";
+            }
+} 
 export class Content extends React.Component {
     render() {
     	let my_food = ['sushi', 'meat', 'eggs', 'yams'];
-        return <div>
-        <h1>Welcome to the Chat Bot!</h1>
-        <body>
+        return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '500px', border: '1px solid #000'}}>
         <MyFavoriteFoodHeader />
         <MyFavoriteFoodList food={my_food} />
-         <img src="/static/chatbot-image.jpg" />
-        </body>
+        <input type="text" id= "userMessage" name="Enter message" position={bottomText} bottom="0"/>
+    
+        <output form="message" name="x" for="userMessage"></output>
+
         </div>;
     }
 }

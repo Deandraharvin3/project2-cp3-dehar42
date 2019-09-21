@@ -4,7 +4,7 @@ export class MyFavoriteFoodHeader extends React.Component {
   render() {
     return (
             <div>
-                My Favorite Food:
+                Messages:
             </div>
         );
   }
