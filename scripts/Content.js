@@ -1,38 +1,41 @@
     
 import * as React from 'react';
+import TextInput from 'react-textinput-field';
+import { Button } from './Button';
+import { Socket } from './Socket';
 import {MyFavoriteFoodHeader} from './MyFavoriteFoodHeader.js';
 import {MyFavoriteFoodList} from './MyFavoriteFoodList.js';
 
-var bottomText = {
-	positon: 'absolute',
-	bottome: 0
+const query = {
+  text: 'SELECT * FROM message',
+  types: {
+    getTypeParser: () => val => val,
+  },
 };
-var know = {
-    "hello" : "hi",
-    "how are you?" : "good",
-    "ok" : ":)"
-    };
-    
-function talk() {
-    var user = document.getElementById("userBox").value;
-    document.getElementById("userBox").value = "";
-    document.getElementById("chatLog").innerHTML += user+"<br>";
-    if (user in know) {
-        document.getElementById("chatLog").innerHTML += know[user]+"<br>";
-        } else {
-            document.getElementById("chatLog").innerHTML += "I don't understand...<br>";
-            }
-} 
 export class Content extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            'numbers': [5, 7, 10, 30]
+        };
+    }
+    
+    componentDidMount() {
+        Socket.on('number received', (data) => {
+            this.setState({
+                'number_received': data['number']
+            });
+        });
+    }
+  
     render() {
-    	let my_food = ['sushi', 'meat', 'eggs', 'yams'];
+        let my_rand_num = this.state.number_received;
+        var my_food = ['food'];
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '500px', border: '1px solid #000'}}>
         <MyFavoriteFoodHeader />
         <MyFavoriteFoodList food={my_food} />
-        <input type="text" id= "userMessage" name="Enter message" position={bottomText} bottom="0"/>
-    
-        <output form="message" name="x" for="userMessage"></output>
-
+        <ul>{query}</ul>
+        <Button />
         </div>;
     }
 }
