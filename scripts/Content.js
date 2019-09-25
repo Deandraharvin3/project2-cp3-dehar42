@@ -12,29 +12,27 @@ const query = {
     getTypeParser: () => val => val,
   },
 };
+
 export class Content extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'numbers': [5, 7, 10, 30]
+            'numbers': []
         };
     }
-    
     componentDidMount() {
-        Socket.on('number received', (data) => {
+        Socket.on('message received', (data) => {
+            console.log("Content recieved message");
             this.setState({
-                'number_received': data['number']
+                'number_received': data['message']
             });
         });
     }
-  
     render() {
         let my_rand_num = this.state.number_received;
-        var my_food = ['food'];
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '500px', border: '1px solid #000'}}>
-        <MyFavoriteFoodHeader />
-        <MyFavoriteFoodList food={my_food} />
-        <ul>{query}</ul>
+        <h1>Hello</h1>
+        <ul>{my_rand_num}</ul> 
         <Button />
         </div>;
     }

@@ -1,5 +1,5 @@
 # models.py
-import flask_sqlalchemy, app
+import flask_sqlalchemy, app, psycopg2
 
 
 # app.app = app modules app variable
