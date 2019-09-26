@@ -19,18 +19,10 @@ export class Content extends React.Component {
     
     componentDidMount() {
         Socket.on('message received', (data) => {
-            console.log("Content recieved message: " + data['message']);
+            console.log("Content recieved message");
             this.setState({
                 'number_received': data['message']
             });
-            if (items.length == 0) {
-                for (const [index, value] of this.state.number_received.entries()) {
-                    items.push(<li key={index}>{value}</li>);
-                  }
-            } else{
-                items.push(data['message']);
-            }
-            
         });
     }
 
@@ -38,7 +30,7 @@ export class Content extends React.Component {
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Hello</h1>
         <body>
-            <text> {items} </text>
+            <text> {this.state.number_received} </text>
             <Button />
         </body>
         </div>;
