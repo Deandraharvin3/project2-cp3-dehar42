@@ -16,21 +16,26 @@ export class Content extends React.Component {
             'message': []
         };
     }
+    
     componentDidMount() {
         Socket.on('message received', (data) => {
             console.log("Content recieved message: " + data['message']);
             this.setState({
                 'number_received': data['message']
             });
-        for (const [index, value] of this.state.number_received.entries()) {
-            items.push(<li key={index}>{value}</li>);
-          }
+            if (items.length == 0) {
+                for (const [index, value] of this.state.number_received.entries()) {
+                    items.push(<li key={index}>{value}</li>);
+                  }
+            } else{
+                items.push(data['message']);
+            }
+            
         });
     }
 
     render() {
-        let my_chat = this.state.message;
-        return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '500px', border: '1px solid #000'}}>
+        return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Hello</h1>
         <body>
             <text> {items} </text>
