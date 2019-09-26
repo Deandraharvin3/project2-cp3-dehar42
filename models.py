@@ -3,7 +3,7 @@ import flask_sqlalchemy, flask, psycopg2, flask_socketio, app
 
 
 # app.app = app modules app variable
-app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://dee:deandra3@localhost/postgres'
+app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = flask_sqlalchemy.SQLAlchemy(app.app)
 
 class Message(db.Model):
