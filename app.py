@@ -6,14 +6,7 @@ app = flask.Flask(__name__)
 
 
 socketio = flask_socketio.SocketIO(app)
-
-conn_string = "host='localhost' dbname='postgres' user='dee' password='deandra3'"
-
-conn = psycopg2.connect(conn_string)
  
-# conn.cursor will return a cursor object, you can use this cursor to perform queries
-cursor = conn.cursor()
-query_all = False
 @app.route('/')
 
 def index():
@@ -59,12 +52,6 @@ def chat_bot_response(message):
 @socketio.on('new message')
 def on_new_number(data):
     print(("Got an event for new number with data:"), data)
-    # rand_number = data['message']
-    # update_records = query()
-    # postgres_insert_query = """ INSERT INTO message (ID, TEXT) VALUES (%s, %s)"""
-    # record_to_insert = (len(update_records)+1, data['message'])
-    # cursor.execute(postgres_insert_query, record_to_insert)
-    # conn.commit() 
     new_message = models.Message(data['message'])
     models.db.session.add(new_message)
     models.db.session.commit()
