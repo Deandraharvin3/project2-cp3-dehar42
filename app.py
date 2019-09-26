@@ -6,7 +6,7 @@ import models
 app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
 
-conn_string = "host='localhost' dbname='postgres' user='dee' password='deandra3'"
+conn_string = os.getenv('DATABASE_URL')
 
 conn = psycopg2.connect(conn_string)
  
