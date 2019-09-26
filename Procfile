@@ -1,1 +1,1 @@
-web: python app.py
+web: gunicorn intro_to_flask:app
