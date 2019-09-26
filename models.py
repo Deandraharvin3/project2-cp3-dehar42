@@ -1,5 +1,5 @@
 # models.py
-import flask_sqlalchemy, app, psycopg2
+import flask_sqlalchemy, flask, psycopg2, flask_socketio, app
 
 
 # app.app = app modules app variable
@@ -15,3 +15,4 @@ class Message(db.Model):
         
     def __repr__(self):
         return '<Message text: %s>' % self.text 
+        

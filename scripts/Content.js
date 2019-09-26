@@ -6,34 +6,36 @@ import { Socket } from './Socket';
 import {MyFavoriteFoodHeader} from './MyFavoriteFoodHeader.js';
 import {MyFavoriteFoodList} from './MyFavoriteFoodList.js';
 
-const query = {
-  text: 'SELECT * FROM message',
-  types: {
-    getTypeParser: () => val => val,
-  },
-};
+let items = [];
 
 export class Content extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            'numbers': []
+            'message': []
         };
     }
     componentDidMount() {
         Socket.on('message received', (data) => {
-            console.log("Content recieved message");
+            console.log("Content recieved message: " + data['message']);
             this.setState({
                 'number_received': data['message']
             });
+        for (const [index, value] of this.state.number_received.entries()) {
+            items.push(<li key={index}>{value}</li>);
+          }
         });
     }
+
     render() {
-        let my_rand_num = this.state.number_received;
+        let my_chat = this.state.message;
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '500px', border: '1px solid #000'}}>
         <h1>Hello</h1>
-        <ul>{my_rand_num}</ul> 
-        <Button />
+        <body>
+            <text> {items} </text>
+            <Button />
+        </body>
         </div>;
     }
 }
