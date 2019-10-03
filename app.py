@@ -1,6 +1,6 @@
 import os
 import flask, flask_socketio,psycopg2
-import models
+import models, chatbot
 
 app = flask.Flask(__name__)
 
@@ -36,18 +36,7 @@ def query():
     socketio.emit('message received', {
         'message': chat
     })
-    
-def chat_bot_response(message):
-    if message == '!! help':
-        chatbot_message = 'try typing \"!! about\" or \"!! chat\" for me to respond'
-    if message == '!! about':
-        chatbot_message = 'Welcome to Deandra\'s chatbot where you can talk to anyone on here including me'
-    if message == '!! chat':
-        chatbot_message = 'I love talking to you chat anytime'
-        
-    new_message = models.Message(chatbot_message)
-    models.db.session.add(new_message)
-    models.db.session.commit()
+   
     
 @socketio.on('new message')
 def on_new_number(data):
@@ -55,9 +44,8 @@ def on_new_number(data):
     new_message = models.Message(data['message'])
     models.db.session.add(new_message)
     models.db.session.commit()
-    if data['message'] == '!! help' or data['message'] == '!! chat' or data['message'] == '!! about':
-        chat_bot_response(data['message'])
-    
+    if new_message[:2] == '!!':
+        chatbot.Chatbot.get_response(new_message[2:len(new_message)])
     query()
     
 if __name__ == '__main__':
