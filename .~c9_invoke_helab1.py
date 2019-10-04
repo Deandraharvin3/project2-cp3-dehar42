@@ -1,7 +1,7 @@
 import os
 import flask, flask_socketio,psycopg2
 import models, chatbot
-from urlparse import urlparse
+from rfc3987 import parse
 
 app = flask.Flask(__name__)
 
@@ -31,13 +31,13 @@ def on_disconnect():
         'data': 'Disconnected'
     })
 
-def query(isurl):
+def query(url):
     messages = models.Message.query.all()
     chat = [m.text + '\n' for m in messages]
 
     socketio.emit('message received', {
         'message': chat,
-        'url': isurl
+        'isURL': url
     })
    
     
@@ -48,13 +48,10 @@ def on_new_number(data):
     new_message = models.Message(data['message'])
     models.db.session.add(new_message)
     models.db.session.commit()
-    
-    #checking if the messahe is a link
-    if urlparse(data['message']).scheme != '':
-        print('Received a URL')
+    if new_message[:4] == 'http':
+        parse(new_message, rule='IRI')
         url = True
-        
-    if data['message'][:2] == '!!':
+    if new_message[:2] == '!!':
         chatbot.Chatbot.get_response(new_message[2:len(new_message)])
     query(url)
     
