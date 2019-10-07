@@ -11,13 +11,15 @@ socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 
 def index():
-    return flask.render_template("index.html")
+    messages = models.Message.query.all()
+    chat = [m.text + "\n" for m in messages]
+    return flask.render_template( "index.html")
 
 @socketio.on('connect')
 def on_connect():
     print('someone connected')
     messages = models.Message.query.all()
-    chat = [m.text + '\n' for m in messages]
+    chat = [m.text + "\n" for m in messages]
     flask_socketio.emit('update', {
         'data': 'Got your connection!',
         'previous_messages': chat
@@ -31,12 +33,12 @@ def on_disconnect():
         'data': 'Disconnected'
     })
 
-def query(isurl):
+def query(isurl, new_message):
     messages = models.Message.query.all()
     chat = [m.text + '\n' for m in messages]
-
     socketio.emit('message received', {
-        'message': chat,
+        'chat': chat[0:len(chat)-1],
+        'message': new_message,
         'url': isurl
     })
    
@@ -56,7 +58,7 @@ def on_new_number(data):
         
     if data['message'][:2] == '!!':
         chatbot.Chatbot.get_response(new_message[2:len(new_message)])
-    query(url)
+    query(url, data['message'])
     
 if __name__ == '__main__':
     socketio.run(

@@ -1,51 +1,51 @@
     
 import * as React from 'react';
-import TextInput from 'react-textinput-field';
 import { Button } from './Button';
 import { Socket } from './Socket';
-import {MyFavoriteFoodHeader} from './MyFavoriteFoodHeader.js';
-import {MyFavoriteFoodList} from './MyFavoriteFoodList.js';
 
-let isUrl = '';
+let loadedPreviousMessages = false;
 
 export class Content extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            'message': []
+            'message': [],
         };
     }
     
     componentDidMount() {
-        Socket.on('message received', (data) => {
-            console.log("Content recieved");
+        Socket.on('update', (data) => {
             this.setState({
+                'old_messages': data['previous_messages']
+            });
+        });
+        
+        Socket.on('message received', (data) => {
+            console.log("Content recieved length: ");
+            this.setState({
+                'old_messages':data['chat'],
                 'number_received': data['message'],
                 'url': data['url']
             });
             console.log('URL: ', this.state.url);
-            if (this.state.url == 'True') {
-                console.log("Received a URL");
-                isUrl = true;
-            } else {
-                isUrl = false;
-            }
         });
-        console.log("Testing");
     }
-
+        
     render() {
+        const isUrl = this.state.url;
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Hello</h1>
-        <body>
+        <ul>
+        <li>{this.state.old_messages}</li>
         { isUrl ? (
-            <a href={this.state.message} />
+            <a href={this.state.number_received}> {this.state.number_received} </a>
             ) : (
             <text> {this.state.number_received} </text>
             )}
             <Button />
-        </body>
+        </ul>
         </div>;
+
     }
 }
