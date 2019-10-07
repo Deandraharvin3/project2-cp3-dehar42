@@ -1,5 +1,5 @@
 import os
-import flask, flask_socketio,psycopg2
+import flask, flask_socketio
 import models, chatbot
 from urlparse import urlparse
 
