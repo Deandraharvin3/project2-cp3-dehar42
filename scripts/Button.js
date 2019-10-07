@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Socket } from './Socket';
+import { onSignIn } from 'templates/index'
 
 export class Button extends React.Component {
     constructor(props) {
@@ -15,6 +16,12 @@ export class Button extends React.Component {
         this.setState({value: event.target.value});
     }
     handleSubmit(event) {
+      let auth = gapi.auth2.getAuthInstance();
+    	let user = auth.currentUser.get();
+       if (user.isSignedIn()) {
+            console.log("google token" + user.getAuthResponse().id_token);
+            Socket.emit('user signin', {'user': user.getAuthResponse().JSON});
+       }
         event.preventDefault();
     
         // this is a local variable so we don't need to initialize in the constructor
