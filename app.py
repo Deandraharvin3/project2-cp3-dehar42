@@ -10,8 +10,6 @@ socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 
 def index():
-    messages = models.Message.query.all()
-    chat = [m.text + "\n" for m in messages]
     return flask.render_template( "index.html")
 
 @socketio.on('connect')
