@@ -10,7 +10,7 @@ socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 
 def index():
-    return flask.render_template( "index.html")
+    return flask.render_template("index.html", GoogleId = os.getenv("GOOGLE_ID"), GoogleSecret = os.getenv("GOOGLE_SECRET"))
 
 @socketio.on('connect')
 def on_connect():
