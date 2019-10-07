@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { Socket } from './Socket';
-import { onSignIn } from 'templates/index'
 
 export class Button extends React.Component {
     constructor(props) {
