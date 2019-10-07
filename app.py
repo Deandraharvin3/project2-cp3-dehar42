@@ -1,10 +1,9 @@
 import os
 import flask, flask_socketio
 import models, chatbot
-from urlparse import urlparse
+from urlparse2 import urlparse
 
 app = flask.Flask(__name__)
-
 
 socketio = flask_socketio.SocketIO(app)
  
