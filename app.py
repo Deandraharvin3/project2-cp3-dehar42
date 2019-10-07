@@ -1,7 +1,7 @@
 import os
 import flask, flask_socketio
 import models, chatbot
-from urlparse2 import urlparse
+from rfc3987 import parse
 
 app = flask.Flask(__name__)
 
@@ -51,9 +51,12 @@ def on_new_number(data):
     models.db.session.commit()
     
     #checking if the messahe is a link
-    if urlparse(data['message']).scheme != '':
+    try:
+        parse(data['message'], rule='URI')
         print('Received a URL')
         url = True
+    except:
+        print('Message not URL')
         
     if data['message'][:2] == '!!':
         chatbot.Chatbot.get_response(new_message[2:len(new_message)])

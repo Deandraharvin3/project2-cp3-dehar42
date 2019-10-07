@@ -1,5 +1,6 @@
 flask
 flask_sqlalchemy
 flask_socketio
-urlparse2
+rfc3987
+parse
 
