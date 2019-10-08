@@ -10,12 +10,12 @@ socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 
 def index():
-    flask_socketio.emit('google keys', {
-        'GoogleID': os.getenv("GOOGLE_ID"),
-        'GoogleSecret': os.getenv("GOOGLE_SECRET")
-    })
     return flask.render_template("index.html")
 
+socketio.emit('google keys', {
+    'GoogleID': os.getenv("GOOGLE_ID"),
+    'GoogleSecret': os.getenv("GOOGLE_SECRET")
+})
 @socketio.on('connect')
 def on_connect():
     print('someone connected')
@@ -25,7 +25,7 @@ def on_connect():
         'data': 'Got your connection!',
         'previous_messages': chat
     })
-
+    
 @socketio.on('disconnect')
 def on_disconnect():
     print('Someone disconnected!')
