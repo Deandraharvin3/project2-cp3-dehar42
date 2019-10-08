@@ -6,6 +6,9 @@ import { GoogleLogin } from 'react-google-login';
 
 const responseGoogle = (response) => {
   console.log(response);
+  this.setState({login: response});
+  Socket.emit('user signin', {'user': response.text});
+  console.log("Sent data to Button.js and app.py");
 }; 
 export class Content extends React.Component {
 
@@ -13,6 +16,7 @@ export class Content extends React.Component {
         super(props);
         this.state = {
             'message': [],
+            login: ''
         };
     }
     
@@ -22,7 +26,12 @@ export class Content extends React.Component {
                 'old_messages': data['previous_messages']
             });
         });
-        
+        Socket.on('google keys', (data) => {
+            this.setState({
+                'id': data['GoogleID'],
+                'secret': data['GoogleSecret']
+            })
+        })
         Socket.on('message received', (data) => {
             console.log("Content recieved length: ");
             this.setState({
@@ -35,6 +44,7 @@ export class Content extends React.Component {
     }
         
     render() {
+        const enabled = this.state.login != '';
         const isUrl = this.state.url;
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Hello</h1>
@@ -45,11 +55,11 @@ export class Content extends React.Component {
             ) : (
             <text> {this.state.number_received} </text>
             )}
-            <Button />
+            <Button disabled={!enabled}/>
         </ul>
         <div>
             <GoogleLogin
-                  clientId={process.env("GOOGLE_ID")}
+                  clientId={this.state.id}
                   buttonText="Login"
                   onSuccess={responseGoogle}
                   onFailure={responseGoogle}

@@ -10,7 +10,11 @@ socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 
 def index():
-    return flask.render_template("index.html", GoogleId = os.getenv("GOOGLE_ID"), GoogleSecret = os.getenv("GOOGLE_SECRET"))
+    flask_socketio.emit('google keys', {
+        'GoogleID': os.getenv("GOOGLE_ID"),
+        'GoogleSecret': os.getenv("GOOGLE_SECRET")
+    })
+    return flask.render_template("index.html")
 
 @socketio.on('connect')
 def on_connect():
@@ -48,7 +52,7 @@ def on_new_number(data):
     models.db.session.add(new_message)
     models.db.session.commit()
     
-    #checking if the messahe is a link
+    #checking if the message is a link
     try:
         parse(data['message'], rule='URI')
         print('Received a URL')
