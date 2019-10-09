@@ -4,12 +4,10 @@ import { Button } from './Button';
 import { Socket } from './Socket';
 import { GoogleLogin } from 'react-google-login';
 
-const responseGoogle = (response) => {
-  console.log(response);
-  this.setState({login: response});
-  Socket.emit('user signin', {'user': response.text});
-  console.log("Sent data to Button.js and app.py");
-}; 
+function googleLogin(user) {
+          Socket.emit('user signin', {'user': user});
+          console.log("Sent data to Button.js and app.py");
+    } 
 export class Content extends React.Component {
 
     constructor(props) {
@@ -20,6 +18,8 @@ export class Content extends React.Component {
         };
     }
     
+        
+    
     componentDidMount() {
         Socket.on('update', (data) => {
             this.setState({
@@ -28,24 +28,30 @@ export class Content extends React.Component {
         });
         Socket.on('google keys', (data) => {
             this.setState({
-                'id': data['GoogleID'],
+                'Google_id': data['GoogleID'],
                 'secret': data['GoogleSecret']
-            })
-        })
+            });
+        });
         Socket.on('message received', (data) => {
             console.log("Content recieved length: ");
             this.setState({
                 'old_messages':data['chat'],
                 'number_received': data['message'],
-                'url': data['url']
+                'url': data['url'],
+                'bot_response': data['bot_response']
             });
             console.log('URL: ', this.state.url);
         });
     }
         
     render() {
-        const enabled = this.state.login != '';
         const isUrl = this.state.url;
+        const responseGoogle = (response) => {
+            this.setState({'signin': response});
+            console.log(response);
+            googleLogin(response);
+          
+        }; 
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Hello</h1>
         <ul>
@@ -55,16 +61,17 @@ export class Content extends React.Component {
             ) : (
             <text> {this.state.number_received} </text>
             )}
-            <Button disabled={!enabled}/>
+            <text> {this.state.bot_response} </text>
+            <Button />
         </ul>
         <div>
             <GoogleLogin
-                  clientId={this.state.id}
+                  clientId={this.state.Google_id}
                   buttonText="Login"
                   onSuccess={responseGoogle}
                   onFailure={responseGoogle}
                   cookiePolicy={'single_host_origin'}
-                />        
+            />   
         </div>
         </div>;
 

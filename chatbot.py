@@ -14,7 +14,7 @@ class Chatbot():
         new_message = models.Message(chatbot_message)
         models.db.session.add(new_message)
         models.db.session.commit()
-        return
-    
+        return chatbot_message
+        
     def __init__(self):
         return
