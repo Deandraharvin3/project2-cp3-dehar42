@@ -2,12 +2,7 @@
 import * as React from 'react';
 import { Button } from './Button';
 import { Socket } from './Socket';
-import { GoogleLogin } from 'react-google-login';
 
-function googleLogin(user) {
-          Socket.emit('user signin', {'user': user});
-          console.log("Sent data to Button.js and app.py");
-    } 
 export class Content extends React.Component {
 
     constructor(props) {
@@ -38,41 +33,31 @@ export class Content extends React.Component {
                 'old_messages':data['chat'],
                 'number_received': data['message'],
                 'url': data['url'],
+                'username': data['username'],
                 'bot_response': data['bot_response']
             });
             console.log('URL: ', this.state.url);
+            console.log('USERNAME: ', this.state.username);
         });
     }
         
     render() {
         const isUrl = this.state.url;
-        const responseGoogle = (response) => {
-            this.setState({'signin': response});
-            console.log(response);
-            googleLogin(response);
-          
-        }; 
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Hello</h1>
         <ul>
         <li>{this.state.old_messages}</li>
+        <b>{this.state.username}</b> <br />
         { isUrl ? (
             <a href={this.state.number_received}> {this.state.number_received} </a>
             ) : (
             <text> {this.state.number_received} </text>
             )}
+            
+            <b>Chatbot</b> <br />
             <text> {this.state.bot_response} </text>
             <Button />
         </ul>
-        <div>
-            <GoogleLogin
-                  clientId={this.state.Google_id}
-                  buttonText="Login"
-                  onSuccess={responseGoogle}
-                  onFailure={responseGoogle}
-                  cookiePolicy={'single_host_origin'}
-            />   
-        </div>
         </div>;
 
     }

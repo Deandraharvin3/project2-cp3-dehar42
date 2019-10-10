@@ -6,9 +6,9 @@ from rfc3987 import parse
 app = flask.Flask(__name__)
 
 socketio = flask_socketio.SocketIO(app)
- 
-@app.route('/')
+Google_user = None
 
+@app.route('/')
 def index():
     return flask.render_template("index.html")
 
@@ -33,23 +33,20 @@ def on_disconnect():
     flask_socketio.emit('update', {
         'data': 'Disconnected'
     })
-
-# This is how you get the data from the Content.js Google login to save the username of the user logging in
-@socketio.on('user signin')
-def googleLogin(data):
-    user_data = json.dumps(data['user'])
-    loaded_data = json.loads(user_data)
-    print('Recieved data: ' + str(loaded_data['profileObj']['name']))
     
 @socketio.on('new message')
-def on_new_number(data):
+def on_message(data):
     url = False
     response = ''
-
-    print(("Got an event for new number with data:"), data)
+    print("Got an event for new number with data")
     new_message = models.Message(data['message'])
     models.db.session.add(new_message)
     models.db.session.commit()
+    
+    # Getting the username from Google login
+    user_data = json.dumps(data['username'])
+    loaded_data = json.loads(user_data)
+    Google_user = str(loaded_data['profileObj']['name'])
     
     #checking if the message is a link
     try:
@@ -65,16 +62,17 @@ def on_new_number(data):
         print("Chatbot message: " + chat_message)
         response = bot_response.get_response(chat_message[2:])
         
-    query(url, data['message'], response)
+    query(url, data['message'], response, Google_user)
     
     
-def query(isurl, new_message, response):
+def query(isurl, new_message, response, username):
     messages = models.Message.query.all()
-    chat = [m.text + '\n' for m in messages]
+    chat = [m.text + '\n\n' for m in messages]
     socketio.emit('message received', {
         'chat': chat[0:len(chat)-1],
         'message': new_message,
         'url': isurl,
+        'username': username,
         'bot_response': response
     })
     
