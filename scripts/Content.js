@@ -13,7 +13,16 @@ export class Content extends React.Component {
         };
     }
     
-        
+    chatbotResponse() {
+        if (this.state.bot_response != '') {
+            if (this.state.yelp_response != '') {
+                console.log("Recieved yelp data");
+                return <a href={this.state.yelp_response}> {this.state.bot_response} </a>;
+            } else {
+                return <text> {this.state.bot_response} </text>;
+            }
+        }
+    }
     
     componentDidMount() {
         Socket.on('update', (data) => {
@@ -34,7 +43,10 @@ export class Content extends React.Component {
                 'number_received': data['message'],
                 'url': data['url'],
                 'username': data['username'],
-                'bot_response': data['bot_response']
+                'profileImage': data['profilePic'],
+                'bot_response': data['bot_response'],
+                'yelp_response': data['yelp_url'],
+                'number_connected': data['connected']
             });
             console.log('URL: ', this.state.url);
             console.log('USERNAME: ', this.state.username);
@@ -44,18 +56,18 @@ export class Content extends React.Component {
     render() {
         const isUrl = this.state.url;
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
-        <h1>Hello</h1>
+        <h1>Welcome to Chatbot</h1>
+        <h3> Number of users: {this.state.number_connected} </h3> 
         <ul>
         <li>{this.state.old_messages}</li>
-        <b>{this.state.username}</b> <br />
+        <img src={this.state.profileImage} /> <b>{this.state.username}</b> <br />
         { isUrl ? (
             <a href={this.state.number_received}> {this.state.number_received} </a>
             ) : (
             <text> {this.state.number_received} </text>
             )}
+        <chatbotResponse />
             
-            <b>Chatbot</b> <br />
-            <text> {this.state.bot_response} </text>
             <Button />
         </ul>
         </div>;

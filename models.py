@@ -11,7 +11,7 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # key
-    text = db.Column(db.String(120))
+    text = db.Column(db.String(220))
 
     def __init__(self, text):
         self.text = text

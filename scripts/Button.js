@@ -8,7 +8,8 @@ export class Button extends React.Component {
     super(props);
     this.state = {
       value: '',
-      enabled: false
+      enabled: false,
+      count: 0
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -27,16 +28,19 @@ export class Button extends React.Component {
     Socket.emit('new message', 
     {
       'message': this.state.value,
-      'username': this.state.signin
+      'user_data': this.state.signin,
     });
-    console.log('Sent a message to server from ', this.state.signin);
+    if (this.state.signin == true){
+      Socket.emit('connect', {'connected_users': this.state.count});
+    }
   }
   
   render() { 
     const responseGoogle = (response) => {
-      this.setState({'signin': response, enabled: true});
+      this.setState({'signin': response, enabled: true, count: this.state.count++});
       console.log(response);
     };
+    
     return (
       <form onSubmit={this.handleSubmit}>
          <GoogleLogin

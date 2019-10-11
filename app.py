@@ -1,13 +1,11 @@
 import os
-import flask, flask_socketio, json
+import flask, flask_socketio, json, yelpAPI
 import models, chatbot
 from rfc3987 import parse
 
 app = flask.Flask(__name__)
-
+user_count=0
 socketio = flask_socketio.SocketIO(app)
-Google_user = None
-
 @app.route('/')
 def index():
     return flask.render_template("index.html")
@@ -19,6 +17,7 @@ socketio.emit('google keys', {
 @socketio.on('connect')
 def on_connect():
     print('someone connected')
+    # user_count += 1
     messages = models.Message.query.all()
     chat = [m.text + "\n" for m in messages]
     flask_socketio.emit('update', {
@@ -38,15 +37,17 @@ def on_disconnect():
 def on_message(data):
     url = False
     response = ''
+    get_business_url = ''
     print("Got an event for new number with data")
     new_message = models.Message(data['message'])
     models.db.session.add(new_message)
     models.db.session.commit()
     
-    # Getting the username from Google login
-    user_data = json.dumps(data['username'])
+    # Getting the username and profile picture from Google login
+    user_data = json.dumps(data['user_data'])
     loaded_data = json.loads(user_data)
-    Google_user = str(loaded_data['profileObj']['name'])
+    Google_username = str(loaded_data['profileObj']['name'])
+    Google_profile = str(loaded_data['profileObj']['imageUrl'])
     
     #checking if the message is a link
     try:
@@ -62,10 +63,22 @@ def on_message(data):
         print("Chatbot message: " + chat_message)
         response = bot_response.get_response(chat_message[2:])
         
-    query(url, data['message'], response, Google_user)
+        if response.isalpha() == False:
+            yelp_response = yelpAPI.YelpBusinessId(response)
+            response = yelp_response['name']
+            get_business_url = yelp_response['url']
+            print("Yelp response ", response, get_business_url)
+
+    query(url, data['message'], response, get_business_url, Google_username, Google_profile)
     
     
-def query(isurl, new_message, response, username):
+def query(isurl, new_message, response, yelp_business, username, profile_picture):
+    if response != '':
+        print('Recieved response from chatbot')
+        new_message = models.Message(response)
+        models.db.session.add(new_message)
+        models.db.session.commit()
+    print('Querying all the messages in the database')    
     messages = models.Message.query.all()
     chat = [m.text + '\n\n' for m in messages]
     socketio.emit('message received', {
@@ -73,7 +86,9 @@ def query(isurl, new_message, response, username):
         'message': new_message,
         'url': isurl,
         'username': username,
-        'bot_response': response
+        'profilePic': profile_picture,
+        'bot_response': response,
+        'yelp_url': yelp_business
     })
     
     
