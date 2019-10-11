@@ -3,4 +3,4 @@ flask_sqlalchemy
 flask_socketio
 rfc3987
 parse
-
+requests
