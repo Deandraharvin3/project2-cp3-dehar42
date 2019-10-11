@@ -35,6 +35,14 @@ export class Button extends React.Component {
     }
   }
   
+  componentDidMount() {
+    Socket.on('google keys', (data) => {
+      this.setState({
+        'Google_id': data['GoogleID'],
+        'secret': data['GoogleSecret']
+      });
+    });
+  }
   render() { 
     const responseGoogle = (response) => {
       this.setState({'signin': response, enabled: true, count: this.state.count++});
@@ -44,7 +52,7 @@ export class Button extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
          <GoogleLogin
-                  clientId='307723243221-48famr48tnm99bv85v7odvrthhakarur.apps.googleusercontent.com'
+                  clientId={this.state.Google_id}
                   buttonText="Login"
                   onSuccess={responseGoogle}
                   onFailure={responseGoogle}

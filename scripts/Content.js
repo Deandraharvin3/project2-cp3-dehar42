@@ -30,12 +30,6 @@ export class Content extends React.Component {
                 'old_messages': data['previous_messages']
             });
         });
-        Socket.on('google keys', (data) => {
-            this.setState({
-                'Google_id': data['GoogleID'],
-                'secret': data['GoogleSecret']
-            });
-        });
         Socket.on('message received', (data) => {
             console.log("Content recieved length: ");
             this.setState({
