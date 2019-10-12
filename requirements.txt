@@ -1,6 +1,7 @@
 flask
-flask_sqlalchemy
+flask_sqlalchemy==2.1
 flask_socketio
+psycopg2-binary
 eventlet
 rfc3987
 parse
