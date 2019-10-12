@@ -70,16 +70,16 @@ def on_message(data):
             yelp_response = yelpAPI.YelpBusinessId(response)
             response = json.dumps(yelp_response['name'], cls=AlchemyEncoder)
             print(response)
-            get_business_url = json.dumps(yelp_response['url'], cls=AlchemyEncoder)
+            get_business_url = yelp_response['url']
             print("Yelp response ", response, get_business_url)
 
     query(url, data['message'], response, get_business_url, Google_username, Google_profile)
     
     
-def query(isurl, new_message, response, yelp_business, username, profile_picture):
+def query(isurl, message, response, yelp_business, username, profile_picture):
+    print(type(yelp_business))
     if response != '':
         print('Recieved response from chatbot')
-        print(response)
         # new_message = models.Message(json.dumps(response, cls=AlchemyEncoder))
         new_message = models.Message(response)
         models.db.session.add(new_message)
@@ -88,8 +88,8 @@ def query(isurl, new_message, response, yelp_business, username, profile_picture
     messages = models.Message.query.all()
     chat = [m.text + '\n\n' for m in messages]
     socketio.emit('message received', {
-        'chat': chat[0:len(chat)-1],
-        'message': new_message,
+        'chat': chat,
+        'message': message,
         'url': isurl,
         'username': username,
         'profilePic': profile_picture,

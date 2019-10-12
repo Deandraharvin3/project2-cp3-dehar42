@@ -13,17 +13,6 @@ export class Content extends React.Component {
         };
     }
     
-    chatbotResponse() {
-        if (this.state.bot_response != '') {
-            if (this.state.yelp_response != '') {
-                console.log("Recieved yelp data");
-                return <a href={this.state.yelp_response}> {this.state.bot_response} </a>;
-            } else {
-                return <text> {this.state.bot_response} </text>;
-            }
-        }
-    }
-    
     componentDidMount() {
         Socket.on('update', (data) => {
             this.setState({
@@ -42,13 +31,17 @@ export class Content extends React.Component {
                 'yelp_response': data['yelp_url'],
                 'number_connected': data['connected']
             });
-            console.log('URL: ', this.state.url);
-            console.log('USERNAME: ', this.state.username);
         });
     }
-        
     render() {
         const isUrl = this.state.url;
+        let isYelp = false;
+        const chatbot = this.state.bot_response;
+        const yelp = this.state.yelp_response;
+        if(yelp != ''){
+            console.log("Recieved yelp response: ", this.state.yelp_response);
+            isYelp = true;
+        }
         return <div style={{backgroundColor: 'white', position: 'absolute', left: '25%', width: '700px', height: '1000px', border: '1px solid #000'}}>
         <h1>Welcome to Chatbot</h1>
         <h3> Number of users: {this.state.number_connected} </h3> 
@@ -60,7 +53,11 @@ export class Content extends React.Component {
             ) : (
             <text> {this.state.number_received} </text>
             )}
-        <chatbotResponse />
+        { isYelp ? (
+            <a href={this.state.yelp_response}> {chatbot} </a>
+        ) : (
+            <text> {chatbot} </text>
+        )}
             
             <Button />
         </ul>
