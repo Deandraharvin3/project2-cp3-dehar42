@@ -1,6 +1,8 @@
 flask
 flask_sqlalchemy
 flask_socketio
+eventlet
+socket.io-client
 rfc3987
 parse
 requests
