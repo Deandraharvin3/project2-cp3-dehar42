@@ -2,6 +2,9 @@ import os
 import flask, flask_socketio, json, yelpAPI
 import models, chatbot
 from rfc3987 import parse
+from flaskEncoder import AlchemyEncoder
+from sqlalchemy.ext.serializer import loads, dumps
+
 
 app = flask.Flask(__name__)
 user_count=0
@@ -65,8 +68,9 @@ def on_message(data):
         
         if response.isalpha() == False:
             yelp_response = yelpAPI.YelpBusinessId(response)
-            response = yelp_response['name']
-            get_business_url = yelp_response['url']
+            response = json.dumps(yelp_response['name'], cls=AlchemyEncoder)
+            print(response)
+            get_business_url = json.dumps(yelp_response['url'], cls=AlchemyEncoder)
             print("Yelp response ", response, get_business_url)
 
     query(url, data['message'], response, get_business_url, Google_username, Google_profile)
@@ -75,6 +79,8 @@ def on_message(data):
 def query(isurl, new_message, response, yelp_business, username, profile_picture):
     if response != '':
         print('Recieved response from chatbot')
+        print(response)
+        # new_message = models.Message(json.dumps(response, cls=AlchemyEncoder))
         new_message = models.Message(response)
         models.db.session.add(new_message)
         models.db.session.commit()
@@ -90,8 +96,8 @@ def query(isurl, new_message, response, yelp_business, username, profile_picture
         'bot_response': response,
         'yelp_url': yelp_business
     })
-    
-    
+
+        
 if __name__ == '__main__':
     socketio.run(
         app,

@@ -1,8 +1,9 @@
 import requests, os, json, chatbot
 
 my_header = {
-    'Authorization': "Bearer " + os.getenv("YELP_BEARER")
+    'Authorization': "Bearer SeJmsWflZfKpNE9VHpFHy0bepqTdPFopr-iEE0Sa6m2ixDsH_sxSiaqaVie5D9Oi4a8ZDpeg67btRFQP5eDdGbHSGDew8JArQ7Vnj_bwP6ICP-krXkpguOPQR7MwXXYx"
     # use os.getenv("YELP_BEARER")
+    # 'Authorization': "Bearer " +os.getenv("YELP_BEARER")
     }
     
 def YelpBusinessSearch(message):
