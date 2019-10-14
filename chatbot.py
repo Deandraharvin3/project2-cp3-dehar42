@@ -3,7 +3,7 @@ import models, yelpAPI
 
 class Chatbot():
     def get_response(self, message):
-        message.lower()
+        message = message.lower()
         if message == 'help':
             chatbot_message = 'try typing \"!!about\", \"!!chat\", or \"!!yelp\" for me to respond'
         elif message == 'about':
