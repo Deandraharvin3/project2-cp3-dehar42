@@ -14,7 +14,10 @@ class Chatbot():
             chatbot_message = 'Welcome Yelp, what would you like to look for in the Baltimore area:\n for example \"!!yelp food\", \"!!yelp museum\", or \"!!yelp club\"'
         elif message[0:4] == 'yelp':
             response = yelpAPI.YelpBusinessSearch(message[4:])
-            chatbot_message = response['businesses'][0]['id']
+            if response['total'] > 0:
+                chatbot_message = response['businesses'][0]['id']
+            else:
+                chatbot_message = 'No business found'
             print("Business ID: " + chatbot_message)
             
         else:

@@ -14,10 +14,18 @@ class ChatbotUnitTests(unittest.TestCase):
     def test_bot_response_valid(self):
         bot_response = chatbot.Chatbot()
         response_help = bot_response.get_response('Help')
-        response_about = bot_response.get_response('yelp museum')
         self.assertEquals(response_help, 'try typing \"!!about\", \"!!chat\", or \"!!yelp\" for me to respond')
-        self.assertEquals(response_about, 'QJkcPAN-eyy8ZvWGP0NIXQ')
         
+    def test_bot_yelp_response_valid(self):
+        bot_response = chatbot.Chatbot()
+        response_yelp = bot_response.get_response('yelp museum')
+        self.assertEquals(response_yelp, 'QJkcPAN-eyy8ZvWGP0NIXQ')
+        
+    def test_bot_yelp_response_invalid(self):
+        bot_response = chatbot.Chatbot()
+        response_yelp = bot_response.get_response('yelp afghd')
+        self.assertEquals(response_yelp, 'No business found')
+
     def test_bot_response_invalid(self):
         bot_response = chatbot.Chatbot()
         response_invalid = bot_response.get_response('Hello')
