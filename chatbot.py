@@ -1,11 +1,11 @@
 #chatbot.py
-import models, yelpAPI
+import models, yelpAPI, random
 
 class Chatbot():
     def get_response(self, message):
         message = message.lower()
         if message == 'help':
-            chatbot_message = 'try typing \"!!about\", \"!!chat\", or \"!!yelp\" for me to respond'
+            chatbot_message = 'try typing \"!!about\", \"!!chat\", \"!!random\", or \"!!yelp\" for me to respond'
         elif message == 'about':
             chatbot_message = 'Welcome to Deandra\'s chatbot where you can talk to anyone on here including me'
         elif message == 'chat':
@@ -19,6 +19,9 @@ class Chatbot():
             else:
                 chatbot_message = 'No business found'
             print("Business ID: " + chatbot_message)
+        elif message == 'random':
+            chatbot_responses=['I think you are amazing', 'You mean something in life', 'Here\'s a joke..\n Where did the 2 programmers meet \n GITHUB!!!', 'How come you want to talk to the bot instead of real users? Weird']
+            chatbot_message = chatbot_responses[random.randint(0, len(chatbot_responses))]
             
         else:
             chatbot_message = "I don't understand that command"

@@ -3,12 +3,9 @@ import os
 import flask, flask_socketio, json, yelpAPI
 import models, chatbot
 from rfc3987 import parse
-from flaskEncoder import AlchemyEncoder
-from sqlalchemy.ext.serializer import loads, dumps
 
 
 app = flask.Flask(__name__)
-user_count=0
 socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 def index():
@@ -28,15 +25,15 @@ def on_connect():
         'data': 'Got your connection!',
         'previous_messages': chat
     })
-    
+
 @socketio.on('disconnect')
 def on_disconnect():
     print('Someone disconnected!')
     
-    flask_socketio.emit('update', {
+    flask_socketio.emit('disconnected', {
         'data': 'Disconnected'
     })
-    
+
 @socketio.on('new message')
 def on_message(data):
     url = False
