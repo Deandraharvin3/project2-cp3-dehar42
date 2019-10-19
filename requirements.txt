@@ -3,7 +3,6 @@ flask_sqlalchemy==2.1
 flask_socketio
 flask_testing
 psycopg2-binary
-urllib2
 webpack
 eventlet
 rfc3987
