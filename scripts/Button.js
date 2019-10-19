@@ -33,6 +33,7 @@ export class Button extends React.Component {
     if (this.state.signin == true){
       Socket.emit('connect', {'connected_users': this.state.count});
     }
+    Socket.emit('disconnect', {'disconnect': 'User disconnected'});
   }
   
   componentDidMount() {

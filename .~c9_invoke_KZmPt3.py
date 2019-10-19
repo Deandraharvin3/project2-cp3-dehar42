@@ -29,8 +29,8 @@ def on_connect():
 @socketio.on('disconnect')
 def on_disconnect():
     print('Someone disconnected!')
-    flask_socketio.emit('disconnected', {
-        'data': 'Someone disconnected'
+    flask_socketio.emit('disconnect', {
+        'data': 'Someone disconnected',
     })
 
 @socketio.on('new message')

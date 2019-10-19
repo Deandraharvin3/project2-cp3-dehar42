@@ -4,7 +4,7 @@ class SocketIOTestCase(unittest.TestCase):
         
     def test_on_connect(self):
         client = app.socketio.test_client(app.app)
-        response = client.get_received('/')
+        response = client.get_received()
         self.assertEquals(len(response), 1)
         from_server = response[0]
         self.assertEquals(
@@ -16,8 +16,8 @@ class SocketIOTestCase(unittest.TestCase):
         client.disconnect()
         
     def test_on_disconnect(self):
-        client = app.socketio.test_client(app.app)
-        response = client.get_received('/')
+        event = app.socketio.test_client(app.app)
+        response = event.get_received()
         #I was expecting response to have all the socket.emit() from my app.py
         self.assertEquals(len(response), 1)
         from_server = response[0]
@@ -32,7 +32,7 @@ class SocketIOTestCase(unittest.TestCase):
         
     def test_get_message(self):
         client = app.socketio.test_client(app.app)
-        response = client.get_received('/')
+        response = client.get_received()
         self.assertEquals(len(response), 1)
         from_server = response[0]
         #todo instead of getting message reccieved, it gets update

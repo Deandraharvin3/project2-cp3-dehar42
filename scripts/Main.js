@@ -8,4 +8,8 @@ ReactDOM.render(<Content />, document.getElementById('content'));
 
 Socket.on('connect', function() {
     console.log('Connecting to the server!');
+});
+
+Socket.on('disconnected', function() {
+    console.log('Somone disconnected');
 })

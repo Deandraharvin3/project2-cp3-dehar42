@@ -19,6 +19,13 @@ export class Content extends React.Component {
                 'old_messages': data['previous_messages']
             });
         });
+        
+        Socket.on('disconnected', (data) => {
+            this.setState({
+                'disconnected': data['data']
+            });
+        });
+        
         Socket.on('message received', (data) => {
             console.log("Content recieved length: ");
             this.setState({
