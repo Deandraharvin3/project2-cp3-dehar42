@@ -12,7 +12,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            python -m tests.integration_tests
+            python -m tests.unit_tests
 
       - run:
           name: deploy to heroku
