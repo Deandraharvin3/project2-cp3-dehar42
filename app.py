@@ -7,6 +7,8 @@ from rfc3987 import parse
 
 app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
+socketio.init_app(app)
+
 @app.route('/')
 def index():
     return flask.render_template("index.html")

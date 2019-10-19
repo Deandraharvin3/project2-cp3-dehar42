@@ -42,25 +42,6 @@ class SocketIOTestCase(unittest.TestCase):
         )
         data = from_server['args'][0]
         self.assertEquals(data['url'], False)  
-        
-    # def test_server_relays_message(self):
-    #     client = app.socketio.test_client(app.app)
-    #     client.emit('new message', {
-    #         'message': 'Purple is beautiful!',
-    #         'user_data': 'Deandra Harvin'
-    #     })
-    #     response = client.get_received()
-    #     self.assertEquals(len(response), 2)
-    #     from_server = response[1]
-    #     self.assertEquals(
-    #         from_server['name'],
-    #         'got your message'
-    #     )
-    #     data = from_server['args'][0]
-    #     self.assertEquals(
-    #         data['your message'],
-    #         u'Purple is beautiful!'
-    #     )
-    #     print(response[1])
+    # Want to add more test case, but I can't figure it out and I ran out of time
 if __name__ == '__main__':
     unittest.main()    
