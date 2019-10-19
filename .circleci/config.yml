@@ -36,7 +36,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            python -m tests.unit_tests
+            python -m tests.integration_tests
 
       - store_artifacts:
           path: test-reports
