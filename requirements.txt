@@ -7,4 +7,4 @@ webpack
 eventlet
 rfc3987
 parse
-requests
+requests==2.21.0
