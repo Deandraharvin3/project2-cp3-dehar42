@@ -15,10 +15,11 @@ socketio.emit('google keys', {
     'GoogleID': os.getenv("GOOGLE_ID"),
     'GoogleSecret': os.getenv("GOOGLE_SECRET")
 })
+def my_function_handler(data):
+    pass
 @socketio.on('connect')
 def on_connect():
     print('someone connected')
-    # user_count += 1
     messages = models.Message.query.all()
     chat = [m.text + "\n" for m in messages]
     flask_socketio.emit('update', {
@@ -29,13 +30,12 @@ def on_connect():
 @socketio.on('disconnect')
 def on_disconnect():
     print('Someone disconnected!')
-    
-    flask_socketio.emit('disconnected', {
-        'data': 'Disconnected'
-    })
 
 @socketio.on('new message')
 def on_message(data):
+    flask_socketio.emit('message_recieved', {
+        'message': data['message']
+    })
     url = False
     response = ''
     get_business_url = ''
