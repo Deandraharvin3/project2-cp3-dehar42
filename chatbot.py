@@ -21,7 +21,7 @@ class Chatbot():
             print("Business ID: " + chatbot_message)
         elif message == 'random':
             chatbot_responses=['I think you are amazing', 'You mean something in life', 'Here\'s a joke..\n Where did the 2 programmers meet \n GITHUB!!!', 'How come you want to talk to the bot instead of real users? Weird']
-            chatbot_message = chatbot_responses[random.randint(0, len(chatbot_responses))]
+            chatbot_message = chatbot_responses[random.randint(0, len(chatbot_responses)-1)]
             
         else:
             chatbot_message = "I don't understand that command"

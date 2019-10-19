@@ -41,7 +41,7 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
-      #- run:
-          #name: deploy to heroku
-          #command: |
-          #  git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+      - run:
+          name: deploy to heroku
+          command: |
+            git push https://heroku:$30b61314-bb52-43e2-9dc7-741553c815e0@git.heroku.com/$project2-dehar42.git master
